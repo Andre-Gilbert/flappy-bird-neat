@@ -1,3 +1,4 @@
+"""Runs flappy bird."""
 import pygame
 
 # pygame setup
