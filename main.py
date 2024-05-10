@@ -9,21 +9,17 @@ from flappy_bird.settings import settings
 
 pygame.init()
 
-SCREEN_WIDTH = 1000
+SCREEN_WIDTH = 400
 SCREEN_HEIGHT = 600
 SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-
 FONT = pygame.font.SysFont("comicsansms", 20)
 FONT_COLOR = (255, 255, 255)
-
 BIRDS = [
     pygame.image.load("./assets/bird-mid-flap.png"),
     pygame.image.load("./assets/bird-up-flap.png"),
     pygame.image.load("./assets/bird-down-flap.png"),
 ]
-
-BOTTOM_PIPE = pygame.image.load("./assets/pipe.png")
-TOP_PIPE = pygame.transform.flip(BOTTOM_PIPE, False, True)
+PIPE = pygame.image.load("./assets/pipe.png")
 FLOOR = pygame.image.load("./assets/floor.png")
 BACKGROUND = pygame.transform.scale(pygame.image.load("./assets/background.png"), (SCREEN_WIDTH, SCREEN_HEIGHT))
 
@@ -48,8 +44,7 @@ def main(config_file: str) -> None:
         font=FONT,
         font_color=FONT_COLOR,
         birds=BIRDS,
-        bottom_pipe=BOTTOM_PIPE,
-        top_pipe=TOP_PIPE,
+        pipe=PIPE,
         floor=FLOOR,
         background=BACKGROUND,
     )
@@ -64,7 +59,6 @@ def main(config_file: str) -> None:
     draw_net(config, winner, True, node_names=nodes)
     plot_stats(stats, ylog=False, view=True)
     plot_species(stats, view=True)
-
     print(f"\nBest genome:\n{winner!s}")
 
 

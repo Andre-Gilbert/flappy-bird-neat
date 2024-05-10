@@ -4,7 +4,7 @@ digraph {
 	delta_y_top [fillcolor=lightgray shape=box style=filled]
 	delta_y_bottom [fillcolor=lightgray shape=box style=filled]
 	"Jump or Not" [fillcolor=lightblue style=filled]
-	delta_x -> "Jump or Not" [color=red penwidth=0.2509179470202386 style=solid]
-	delta_y_top -> "Jump or Not" [color=green penwidth=0.24116510192365845 style=solid]
-	delta_y_bottom -> "Jump or Not" [color=green penwidth=0.34554480423973355 style=solid]
+	delta_x -> "Jump or Not" [color=red penwidth=0.36013814617717577 style=solid]
+	delta_y_top -> "Jump or Not" [color=green penwidth=0.288887383584601 style=solid]
+	delta_y_bottom -> "Jump or Not" [color=green penwidth=0.3421729383556662 style=solid]
 }

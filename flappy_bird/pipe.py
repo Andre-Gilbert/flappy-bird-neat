@@ -32,3 +32,11 @@ class Pipe:
         self.top_pipe_height = random.randrange(settings.PIPE_TOP_MIN_HEIGHT, settings.PIPE_TOP_MAX_HEIGHT)
         self.top_pipe_top_left = self.top_pipe_height - self.height
         self.bottom_pipe_top_left = self.top_pipe_height + self.vertical_gap
+
+    def draw(self, screen: pygame.Surface) -> None:
+        screen.blit(self.top_pipe, (self.x, self.top_pipe_top_left))
+        screen.blit(self.bottom_pipe, (self.x, self.bottom_pipe_top_left))
+
+    def get_masks(self) -> pygame.mask.Mask:
+        """Gets the masks of the pipes."""
+        return pygame.mask.from_surface(self.top_pipe), pygame.mask.from_surface(self.bottom_pipe)
