@@ -7,7 +7,7 @@ class Settings(BaseSettings):
     """Game settings."""
 
     FPS: int = 60
-    MAX_SCORE: int = 1000
+    MAX_SCORE: int = 10000
 
     # Floor
     FLOOR_VELOCITY: int = 5
@@ -36,9 +36,9 @@ class Settings(BaseSettings):
 
     # Neat
     GENERATION: int = 0
-    MAX_GEN: int = 50
-    THRESHOLD_TO_JUMP: float = 0.8
-    FAILED_PUNISHMENT: int = 10
+    MAX_GEN: int = 100
+    THRESHOLD_TO_JUMP: float = 0.75
+    PUNISHMENT: int = 10
 
 
 settings = Settings()

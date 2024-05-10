@@ -4,7 +4,7 @@ import neat
 import pygame
 
 from flappy_bird.game import Game
-from flappy_bird.neat import draw_net, plot_species, plot_stats
+from flappy_bird.neat import draw_neural_network, plot_species, plot_stats
 from flappy_bird.settings import settings
 
 pygame.init()
@@ -56,8 +56,8 @@ def main(config_file: str) -> None:
         -3: "delta_y_bottom",
         0: "Jump or Not",
     }
-    draw_net(config, winner, True, node_names=nodes)
-    plot_stats(stats, ylog=False, view=True)
+    draw_neural_network(config, winner, True, node_names=nodes)
+    plot_stats(stats, y_log=False, view=True)
     plot_species(stats, view=True)
     print(f"\nBest genome:\n{winner!s}")
 

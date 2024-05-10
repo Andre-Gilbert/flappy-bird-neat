@@ -1,5 +1,7 @@
 """Flappy bird game."""
 
+from typing import Any
+
 import neat
 import pygame
 
@@ -63,7 +65,16 @@ class Game:
             or bird.y < 0
         )
 
-    def draw(self, birds, pipes, floor, score, generation, game_time):
+    def draw(
+        self,
+        birds: list[Bird],
+        pipes: list[Pipe],
+        floor: Floor,
+        score: int,
+        generation: int,
+        game_time: float,
+    ) -> None:
+        """Draws the game."""
         self.screen.blit(self.background, (0, 0))
         floor.draw(self.screen)
         for pipe in pipes:
@@ -88,85 +99,79 @@ class Game:
 
         pygame.display.update()
 
-    def get_index(self, pipes, birds):
-
-        bird_x = birds[0].x
-
-        list_distance = [pipe.x + pipe.width - bird_x for pipe in pipes]
-
-        index = list_distance.index(min(i for i in list_distance if i >= 0))
+    def get_pipe_index(self, pipes: list[Pipe], birds: list[Bird]) -> int:
+        """Gets the index of the pipe."""
+        distances = [pipe.x + pipe.width - birds[0].x for pipe in pipes]
+        index = distances.index(min(i for i in distances if i >= 0))
         return index
 
-    def main(self, genomes, config):
+    def main(self, genomes_with_id: list[tuple], config: Any) -> None:
+        """Runs the game."""
         generation = settings.GENERATION
         generation += 1
-
         score = 0
         clock = pygame.time.Clock()
         start_time = pygame.time.get_ticks()
 
+        # Create floor, pipes, birds, genomes, and models
         floor = Floor(settings.FLOOR_STARTING_POSITION, self.floor)
         pipes = [
             Pipe(settings.PIPE_STARTING_POSITION + i * settings.PIPE_HORIZONTAL_GAP, self.top_pipe, self.bottom_pipe)
             for i in range(settings.PIPE_MAX_NUM)
         ]
         models = []
-        genomes_list = []
+        genomes = []
         birds = []
 
-        for _, genome in genomes:
+        for _, genome in genomes_with_id:
             birds.append(Bird(settings.BIRD_STARTING_X_POSITION, settings.BIRD_STARTING_Y_POSITION, self.birds))
             genome.fitness = 0
-            genomes_list.append(genome)
+            genomes.append(genome)
             model = neat.nn.FeedForwardNetwork.create(genome, config)
             models.append(model)
 
+        # Game loop
         run = True
-
-        while run is True:
-
+        while run:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
-
             if score >= settings.MAX_SCORE or not birds:
                 run = False
                 break
 
             game_time = round((pygame.time.get_ticks() - start_time) / 1000, 2)
-
             clock.tick(settings.FPS)
 
+            # Move floor, pipes
             floor.move()
-
-            pipe_input_index = self.get_index(pipes, birds)
-
             passed_pipes = []
             for pipe in pipes:
                 pipe.move()
                 if pipe.x + pipe.width < birds[0].x:
                     passed_pipes.append(pipe)
 
+            # Score equals number of passed pipes
             score = len(passed_pipes)
 
+            # Move bird, pass model input, and update fitness
+            pipe_index = self.get_pipe_index(pipes, birds)
             for index, bird in enumerate(birds):
                 bird.move()
-                delta_x = bird.x - pipes[pipe_input_index].x
-                delta_y_top = bird.y - pipes[pipe_input_index].top_pipe_height
-                delta_y_bottom = bird.y - pipes[pipe_input_index].bottom_pipe_top_left
-                net_input = (delta_x, delta_y_top, delta_y_bottom)
-                output = models[index].activate(net_input)
 
+                delta_x = bird.x - pipes[pipe_index].x
+                delta_y_top = bird.y - pipes[pipe_index].top_pipe_height
+                delta_y_bottom = bird.y - pipes[pipe_index].bottom_pipe_top_left
+
+                output = models[index].activate((delta_x, delta_y_top, delta_y_bottom))
                 if output[0] > settings.THRESHOLD_TO_JUMP:
                     bird.jump()
 
-                bird_failed = self.check_collision(bird, pipes[pipe_input_index], floor)
-
-                genomes_list[index].fitness = game_time + score - bird_failed * settings.FAILED_PUNISHMENT
-
-                if bird_failed:
+                bird_died = self.check_collision(bird, pipes[pipe_index], floor)
+                genomes[index].fitness = game_time + score - bird_died * settings.PUNISHMENT
+                if bird_died:
                     models.pop(index)
-                    genomes_list.pop(index)
+                    genomes.pop(index)
                     birds.pop(index)
 
             self.draw(birds, pipes, floor, score, generation, game_time)
