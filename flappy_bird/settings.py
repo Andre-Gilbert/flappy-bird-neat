@@ -7,19 +7,19 @@ class Settings(BaseSettings):
     """Game settings."""
 
     FPS: int = 60
-    MAX_SCORE: int = 10000
+    MAX_SCORE: int = 1000
 
     # Floor
     FLOOR_VELOCITY: int = 5
     FLOOR_STARTING_POSITION: int = 500
 
     # Pipe
-    PIPE_MAX_NUM: int = 500
-    PIPE_VERTICAL_GAP: int = 200
-    PIPE_HORIZONTAL_GAP: int = 200
+    PIPE_MAX_NUM: int = 1000
+    PIPE_VERTICAL_GAP: int = 150
+    PIPE_HORIZONTAL_GAP: int = 150
     PIPE_VELOCITY: int = 5
     PIPE_TOP_MIN_HEIGHT: int = 100
-    PIPE_TOP_MAX_HEIGHT: int = 300
+    PIPE_TOP_MAX_HEIGHT: int = 250
     PIPE_STARTING_POSITION: int = 500
 
     # Bird

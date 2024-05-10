@@ -136,6 +136,7 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
+
             if score >= settings.MAX_SCORE or not birds:
                 run = False
                 break
