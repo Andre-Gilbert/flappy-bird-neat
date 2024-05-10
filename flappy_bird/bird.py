@@ -18,7 +18,8 @@ class Bird:
         self.velocity = 0
         self.animation_time_count = 0
 
-    def move(self):
+    def move(self) -> None:
+        """Moves the bird."""
         self.time += 1
         displacement = self.velocity * self.time + (1 / 2) * settings.BIRD_ACCELERATION * self.time**2
         displacement = min(displacement, settings.BIRD_MAX_DISPLACEMENT)
@@ -40,13 +41,15 @@ class Bird:
                     )
                 )
             else:
-                self.fly_angle = self.MAX_DOWNWARD_ANGLE
+                self.fly_angle = settings.BIRD_MAX_DOWN_ANGLE
 
-    def jump(self):
+    def jump(self) -> None:
+        """Makes the bird jump."""
         self.velocity = settings.BIRD_JUMP_VELOCITY
         self.time = 0
 
-    def animation(self):
+    def animation(self) -> tuple:
+        """Animates the bird."""
         self.animation_time_count += 1
         if self.fly_angle < -45:
             self.bird = self.birds[0]

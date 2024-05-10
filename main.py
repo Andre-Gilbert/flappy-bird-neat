@@ -3,8 +3,9 @@
 import neat
 import pygame
 
+from flappy_bird.game import Game
+from flappy_bird.neat import draw_net, plot_species, plot_stats
 from flappy_bird.settings import settings
-from flappy_bird.stats import draw_net, plot_species, plot_stats
 
 pygame.init()
 
@@ -27,30 +28,45 @@ FLOOR = pygame.image.load("./assets/floor.png")
 BACKGROUND = pygame.transform.scale(pygame.image.load("./assets/background.png"), (SCREEN_WIDTH, SCREEN_HEIGHT))
 
 
-def main(config_file):
+def main(config_file: str) -> None:
+    """Runs flappy bird with NEAT."""
     config = neat.config.Config(
-        neat.DefaultGenome, neat.DefaultReproduction, neat.DefaultSpeciesSet, neat.DefaultStagnation, config_file
+        neat.DefaultGenome,
+        neat.DefaultReproduction,
+        neat.DefaultSpeciesSet,
+        neat.DefaultStagnation,
+        config_file,
     )
-
-    # Create a neat.population.Population object using the Config object created above
-    neat_pop = neat.population.Population(config)
-
-    # show the summary statistics of the learning progress
-    neat_pop.add_reporter(neat.StdOutReporter(True))
+    population = neat.population.Population(config)
+    population.add_reporter(neat.StdOutReporter(True))
     stats = neat.StatisticsReporter()
-    neat_pop.add_reporter(stats)
-
-    neat_pop.run(main, settings.MAX_GEN)
-
+    population.add_reporter(stats)
+    game = Game(
+        width=SCREEN_WIDTH,
+        height=SCREEN_HEIGHT,
+        screen=SCREEN,
+        font=FONT,
+        font_color=FONT_COLOR,
+        birds=BIRDS,
+        bottom_pipe=BOTTOM_PIPE,
+        top_pipe=TOP_PIPE,
+        floor=FLOOR,
+        background=BACKGROUND,
+    )
+    population.run(game.main, settings.MAX_GEN)
     winner = stats.best_genome()
-
-    node_names = {-1: "delta_x", -2: "delta_y_top", -3: "delta_y_bottom", 0: "Jump or Not"}
-    draw_net(config, winner, True, node_names=node_names)
+    nodes = {
+        -1: "delta_x",
+        -2: "delta_y_top",
+        -3: "delta_y_bottom",
+        0: "Jump or Not",
+    }
+    draw_net(config, winner, True, node_names=nodes)
     plot_stats(stats, ylog=False, view=True)
     plot_species(stats, view=True)
 
-    print("\nBest genome:\n{!s}".format(winner))
+    print(f"\nBest genome:\n{winner!s}")
 
 
 if __name__ == "__main__":
-    main("neat.txt")
+    main(config_file="neat.txt")
