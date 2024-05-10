@@ -8,7 +8,20 @@ from flappy_bird.settings import settings
 
 
 class Pipe:
-    """Class that implements a game pipe."""
+    """Class that implements a game pipe.
+
+    Attributes:
+        top_pipe: Top pipe image.
+        bottom_pipe: Bottom pipe image.
+        x: x-coordinate of pipe.
+        top_pipe_height: Top pipe height.
+        top_pipe_top_left: Top left corner of top pipe.
+        bottom_pipe_top_left: Top left corner of bottom pipe.
+        velocity: Moving speed of pipe.
+        vertical_gap: Gap between pipes.
+        width: Pipe image width.
+        height: Pipe image height.
+    """
 
     def __init__(self, x: int, top_pipe: pygame.Surface, bottom_pipe: pygame.Surface):
         self.top_pipe = top_pipe
@@ -34,6 +47,7 @@ class Pipe:
         self.bottom_pipe_top_left = self.top_pipe_height + self.vertical_gap
 
     def draw(self, screen: pygame.Surface) -> None:
+        """Draws the pipe."""
         screen.blit(self.top_pipe, (self.x, self.top_pipe_top_left))
         screen.blit(self.bottom_pipe, (self.x, self.bottom_pipe_top_left))
 
