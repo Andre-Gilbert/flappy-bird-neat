@@ -31,7 +31,6 @@ class Game:
         self,
         width: int,
         height: int,
-        screen: pygame.Surface,
         font: pygame.font.Font,
         font_color: tuple[int, ...],
         birds: list[pygame.Surface],
@@ -41,7 +40,7 @@ class Game:
     ):
         self.width = width
         self.height = height
-        self.screen = screen
+        self.screen = pygame.display.set_mode((width, height))
         self.font = font
         self.font_color = font_color
         self.birds = birds
@@ -76,26 +75,30 @@ class Game:
     ) -> None:
         """Draws the game."""
         self.screen.blit(self.background, (0, 0))
+
+        # Draw moving floor
         floor.draw(self.screen)
+
+        # Draw moving pipes
         for pipe in pipes:
             pipe.draw(self.screen)
+
+        # Draw flapping birds
         for bird in birds:
             bird.draw(self.screen)
 
-        score_text = self.font.render("Score: " + str(score), 1, self.font_color)
-        self.screen.blit(score_text, (self.width - 15 - score_text.get_width(), 15))
-
+        # Render game updates
         game_time_text = self.font.render("Timer: " + str(game_time) + " s", 1, self.font_color)
-        self.screen.blit(game_time_text, (self.width - 15 - game_time_text.get_width(), 15 + score_text.get_height()))
+        self.screen.blit(game_time_text, (self.width - 15 - game_time_text.get_width(), 15))
+
+        score_text = self.font.render("Score: " + str(score), 1, self.font_color)
+        self.screen.blit(score_text, (self.width - 15 - score_text.get_width(), 15 + game_time_text.get_height()))
 
         generation_text = self.font.render("Generation: " + str(generation - 1), 1, self.font_color)
         self.screen.blit(generation_text, (15, 15))
 
-        bird_text = self.font.render("Birds Alive: " + str(len(birds)), 1, self.font_color)
+        bird_text = self.font.render("Birds alive: " + str(len(birds)), 1, self.font_color)
         self.screen.blit(bird_text, (15, 15 + generation_text.get_height()))
-
-        progress_text = self.font.render("Pipes Remained: " + str(len(pipes) - score), 1, self.font_color)
-        self.screen.blit(progress_text, (15, 15 + generation_text.get_height() + bird_text.get_height()))
 
         pygame.display.update()
 

@@ -34,6 +34,8 @@ class Bird:
         self.time += 1
         displacement = self.velocity * self.time + (1 / 2) * settings.BIRD_ACCELERATION * self.time**2
         displacement = min(displacement, settings.BIRD_MAX_DISPLACEMENT)  # Set displacement limit per frame
+
+        # Update y-coordinate of bird
         self.y = self.y + displacement
 
         # Bird goes up
@@ -89,8 +91,8 @@ class Bird:
 
     def draw(self, screen: pygame.Surface) -> None:
         """Draws the bird on the pygame screen."""
-        rotated_image, rotated_rect = self.animation()
-        screen.blit(rotated_image, rotated_rect)
+        rotated_img, rotated_rect = self.animation()
+        screen.blit(rotated_img, rotated_rect)
 
     def get_mask(self) -> pygame.mask.Mask:
         """Gets the mask of the bird."""

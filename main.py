@@ -3,24 +3,14 @@
 import neat
 import pygame
 
-pygame.init()
 from flappy_bird.game import Game
 from flappy_bird.neat import draw_neural_network, plot_species, plot_stats
 from flappy_bird.settings import settings
 
-SCREEN_WIDTH = 400
-SCREEN_HEIGHT = 600
-SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-FONT = pygame.font.SysFont("comicsansms", 20)
-FONT_COLOR = (255, 255, 255)
-BIRDS = [
-    pygame.image.load("./assets/bird-mid-flap.png"),
-    pygame.image.load("./assets/bird-up-flap.png"),
-    pygame.image.load("./assets/bird-down-flap.png"),
-]
-PIPE = pygame.image.load("./assets/pipe.png")
-FLOOR = pygame.image.load("./assets/floor.png")
-BACKGROUND = pygame.transform.scale(pygame.image.load("./assets/background.png"), (SCREEN_WIDTH, SCREEN_HEIGHT))
+pygame.init()
+
+WIDTH = 400
+HEIGHT = 600
 
 
 def main(config_file: str) -> None:
@@ -37,15 +27,18 @@ def main(config_file: str) -> None:
     stats = neat.StatisticsReporter()
     population.add_reporter(stats)
     game = Game(
-        width=SCREEN_WIDTH,
-        height=SCREEN_HEIGHT,
-        screen=SCREEN,
-        font=FONT,
-        font_color=FONT_COLOR,
-        birds=BIRDS,
-        pipe=PIPE,
-        floor=FLOOR,
-        background=BACKGROUND,
+        width=WIDTH,
+        height=HEIGHT,
+        font=pygame.font.SysFont("comicsansms", 20),
+        font_color=(255, 255, 255),
+        birds=[
+            pygame.image.load("./assets/bird-mid-flap.png"),
+            pygame.image.load("./assets/bird-up-flap.png"),
+            pygame.image.load("./assets/bird-down-flap.png"),
+        ],
+        pipe=pygame.image.load("./assets/pipe.png"),
+        floor=pygame.image.load("./assets/floor.png"),
+        background=pygame.transform.scale(pygame.image.load("./assets/background.png"), (WIDTH, HEIGHT)),
     )
     population.run(game.main, settings.MAX_GEN)
     winner = stats.best_genome()
