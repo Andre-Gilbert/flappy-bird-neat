@@ -47,6 +47,7 @@ class Bird:
                 )
             else:
                 self.fly_angle = settings.BIRD_MAX_UP_ANGLE
+
         # Bird goes down
         else:
             if self.fly_angle > settings.BIRD_MAX_DOWN_ANGLE:

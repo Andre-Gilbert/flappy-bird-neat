@@ -29,6 +29,7 @@ class Game:
 
     def __init__(
         self,
+        screen: pygame.Surface,
         width: int,
         height: int,
         font: pygame.font.Font,
@@ -38,9 +39,9 @@ class Game:
         floor: pygame.Surface,
         background: pygame.Surface,
     ):
+        self.screen = screen
         self.width = width
         self.height = height
-        self.screen = pygame.display.set_mode((width, height))
         self.font = font
         self.font_color = font_color
         self.birds = birds
@@ -168,6 +169,9 @@ class Game:
                 delta_y_bottom = bird.y - pipes[pipe_index].bottom_pipe_top_left
 
                 output = models[index].activate((delta_x, delta_y_top, delta_y_bottom))
+
+                # tanh activation function, output will be between -1 and 1
+                # jump if output > 0.5
                 if output[0] > settings.THRESHOLD_TO_JUMP:
                     bird.jump()
 

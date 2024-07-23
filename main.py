@@ -4,13 +4,13 @@ import neat
 import pygame
 
 from flappy_bird.game import Game
-from flappy_bird.neat import draw_neural_network, plot_species, plot_stats
 from flappy_bird.settings import settings
 
 pygame.init()
 
 WIDTH = 400
 HEIGHT = 600
+SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 
 
 def main(config_file: str) -> None:
@@ -27,6 +27,7 @@ def main(config_file: str) -> None:
     stats = neat.StatisticsReporter()
     population.add_reporter(stats)
     game = Game(
+        screen=SCREEN,
         width=WIDTH,
         height=HEIGHT,
         font=pygame.font.SysFont("comicsansms", 20),
@@ -42,15 +43,6 @@ def main(config_file: str) -> None:
     )
     population.run(game.main, settings.MAX_GEN)
     winner = stats.best_genome()
-    nodes = {
-        -1: "delta_x",
-        -2: "delta_y_top",
-        -3: "delta_y_bottom",
-        0: "Jump or Not",
-    }
-    draw_neural_network(config, winner, True, nodes=nodes)
-    plot_stats(stats, y_log=False, view=True)
-    plot_species(stats, view=True)
     print(f"\nBest genome:\n{winner!s}")
 
 

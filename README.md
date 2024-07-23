@@ -16,6 +16,10 @@ To start flappy bird run:
 python main.py
 ```
 
+## Sources
+
+- Flappy Bird game and assets: https://github.com/sourabhv/FlapPyBird. Game implementation follows this repository but was simplified for integrating NEAT.
+
 ## Contributors
 
 - André Anan Gilbert (3465546)

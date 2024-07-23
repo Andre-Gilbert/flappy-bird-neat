@@ -37,8 +37,8 @@ class Settings(BaseSettings):
     # Neat
     GENERATION: int = 0
     MAX_GEN: int = 100
-    THRESHOLD_TO_JUMP: float = 0.75
-    PUNISHMENT: int = 10
+    THRESHOLD_TO_JUMP: float = 0.5
+    PUNISHMENT: int = 5
 
 
 settings = Settings()
