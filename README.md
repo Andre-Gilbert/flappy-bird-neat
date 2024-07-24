@@ -23,4 +23,4 @@ python main.py
 ## Contributors
 
 - André Anan Gilbert (3465546)
-- Jan Henrik Bertrand (2571020)
+- Jan Henrik Bertrand (8556462)
